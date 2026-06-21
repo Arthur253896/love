@@ -52,6 +52,22 @@
     return content;
   };
 
+  const addCake = (content) => {
+    const cake = createElement("div", "cake-scene");
+    cake.setAttribute("aria-label", "生日蛋糕");
+    cake.innerHTML = `
+      <span class="cake-glow"></span>
+      <span class="cake-candle candle-left"><i></i></span>
+      <span class="cake-candle candle-right"><i></i></span>
+      <span class="cake-top"></span>
+      <span class="cake-cream"></span>
+      <span class="cake-layer layer-one"></span>
+      <span class="cake-layer layer-two"></span>
+      <span class="cake-plate"></span>
+    `;
+    content.prepend(cake);
+  };
+
   const makeSlide = ({ className = "", label, title, text, image, photoMode, button }) => {
     const slide = createElement("section", `slide ${className}`.trim());
     slide.setAttribute("role", "group");
@@ -59,6 +75,10 @@
 
     addPhoto(slide, image, title, photoMode);
     const content = addContent(slide, label || "", title || "", text || "");
+
+    if (className.includes("final-page")) {
+      addCake(content);
+    }
 
     if (button) {
       const link = createElement("a", "wechat-button", button.text);
