@@ -7,7 +7,7 @@ window.lovePageData = {
     kicker: "写给你",
     title: "这些日子，我都记得",
     subtitle: "如果你愿意停下来看看，我想把我们走过的路，认真地放在这里。",
-    image: "assets/photos/hero.jpg",
+    image: "assets/photos/01.jpg",
   },
   intro: {
     title: "迟到的生日礼物",
