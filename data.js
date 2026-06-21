@@ -7,7 +7,7 @@ window.lovePageData = {
     kicker: "写给你",
     title: "这些日子，我都记得",
     subtitle: "如果你愿意停下来看看，我想把我们走过的路，认真地放在这里。",
-    image: "assets/photos/01.jpg",
+    image: "assets/photos/optimized/01.jpg",
   },
   intro: {
     title: "迟到的生日礼物",
@@ -16,57 +16,57 @@ window.lovePageData = {
   },
   photos: [
     {
-      src: "assets/photos/01.jpg",
+      src: "assets/photos/optimized/01.jpg",
       title: "第一次认真记住你的笑",
       caption: "这张照片里，我记得的不只是画面，还有那天我心里很确定的喜欢。",
     },
     {
-      src: "assets/photos/02.jpg",
+      src: "assets/photos/optimized/02.jpg",
       title: "一起走过的普通日子",
       caption: "后来才明白，最舍不得的往往不是盛大的时刻，而是这些平常又安心的瞬间。",
     },
     {
-      src: "assets/photos/03.jpg",
+      src: "assets/photos/optimized/03.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/04.jpg",
+      src: "assets/photos/optimized/04.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/05.jpg",
+      src: "assets/photos/optimized/05.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/06.jpg",
+      src: "assets/photos/optimized/06.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/07.jpg",
+      src: "assets/photos/optimized/07.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/08.jpg",
+      src: "assets/photos/optimized/08.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/09.jpg",
+      src: "assets/photos/optimized/09.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/10.jpg",
+      src: "assets/photos/optimized/10.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },
     {
-      src: "assets/photos/11.jpg",
+      src: "assets/photos/optimized/11.jpg",
       title: "我想再好好珍惜",
       caption: "如果还有机会，我想把从前没做好的地方，变成以后真的做到的事。",
     },

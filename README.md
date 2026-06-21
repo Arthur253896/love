@@ -7,8 +7,9 @@
 ## 怎么替换成你们自己的内容
 
 1. 把照片放进 `assets/photos/`：
-   - 首屏大图和微信分享图现在使用 `01.jpg`
-   - 照片墙：`01.jpg`、`02.jpg`、`03.jpg`
+   - 首屏大图和微信分享图现在使用 `assets/photos/optimized/01.jpg`
+   - 页面实际加载的是 `assets/photos/optimized/` 里的压缩图
+   - 原图可以继续保留在 `assets/photos/` 里备份
 2. 打开 `data.js`，改里面的标题、照片说明、时间线、信和最后的按钮文案。
 3. 如果照片更多，继续在 `photos` 数组里增加：
 

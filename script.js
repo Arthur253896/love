@@ -25,9 +25,10 @@
     fallback.hidden = true;
 
     const img = document.createElement("img");
-    img.src = src;
+    img.dataset.src = src;
     img.alt = title || "我们的照片";
-    img.loading = "eager";
+    img.loading = "lazy";
+    img.decoding = "async";
     img.addEventListener("error", () => {
       img.remove();
       fallback.hidden = false;
@@ -67,6 +68,25 @@
     }
 
     return slide;
+  };
+
+  const loadSlideImage = (index, priority) => {
+    const slide = slides[index];
+    if (!slide) return;
+
+    const img = slide.querySelector("img[data-src]");
+    if (!img || img.src) return;
+
+    img.loading = priority ? "eager" : "lazy";
+    img.fetchPriority = priority ? "high" : "low";
+    img.src = img.dataset.src;
+  };
+
+  const preloadNearbyImages = () => {
+    loadSlideImage(currentIndex, true);
+    loadSlideImage(currentIndex + 1, true);
+    loadSlideImage(currentIndex + 2, false);
+    loadSlideImage(currentIndex - 1, false);
   };
 
   const polishTextPages = (built) => {
@@ -185,6 +205,7 @@
     nextButton.disabled = currentIndex === slides.length - 1;
     pageCount.textContent = `${currentIndex + 1} / ${slides.length}`;
     progressBar.style.width = `${((currentIndex + 1) / slides.length) * 100}%`;
+    preloadNearbyImages();
   };
 
   const goTo = (index) => {
