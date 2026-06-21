@@ -1,220 +1,220 @@
 (function () {
   const data = window.lovePageData || {};
+  const slidesRoot = document.getElementById("slides");
+  const app = document.getElementById("storyApp");
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const progressBar = document.getElementById("progressBar");
+  const pageCount = document.getElementById("pageCount");
 
-  const setText = (id, value) => {
-    const node = document.getElementById(id);
-    if (node && value) node.textContent = value;
+  let currentIndex = 0;
+  let slides = [];
+
+  const createElement = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
   };
 
-  const imageExistsFallback = (img, fallback) => {
-    img.addEventListener("error", () => {
-      img.remove();
-      if (fallback) fallback.hidden = false;
-    });
-  };
+  const addPhoto = (slide, src, title, mode) => {
+    if (!src) return;
 
-  const renderHero = () => {
-    const hero = data.hero || {};
-    setText("heroKicker", hero.kicker);
-    setText("hero-title", hero.title);
-    setText("heroSubtitle", hero.subtitle);
-
-    const media = document.getElementById("heroMedia");
-    const fallback = media.querySelector(".hero-fallback");
-    if (!hero.image) return;
+    const frame = createElement("div", `slide-photo ${mode || ""}`.trim());
+    const fallback = createElement("div", "hero-fallback", title || "Our Story");
+    fallback.hidden = true;
 
     const img = document.createElement("img");
-    img.src = hero.image;
-    img.alt = hero.title || "我们的照片";
+    img.src = src;
+    img.alt = title || "我们的照片";
     img.loading = "eager";
-    imageExistsFallback(img, fallback);
-    fallback.hidden = true;
-    media.prepend(img);
+    img.addEventListener("error", () => {
+      img.remove();
+      fallback.hidden = false;
+    });
+
+    frame.append(img, fallback);
+    slide.appendChild(frame);
   };
 
-  const renderIntro = () => {
-    const intro = data.intro || {};
-    setText("intro-title", intro.title);
-    setText("introText", intro.text);
-  };
+  const addContent = (slide, label, title, text) => {
+    const content = createElement("div", "slide-content");
+    content.appendChild(createElement("p", "slide-label", label));
+    content.appendChild(createElement("h1", "slide-title", title));
 
-  const renderPhotos = () => {
-    const strip = document.getElementById("photoStrip");
-    const photos = Array.isArray(data.photos) ? data.photos : [];
-    strip.innerHTML = "";
-
-    if (!photos.length) {
-      const empty = document.createElement("div");
-      empty.className = "placeholder-card";
-      empty.textContent = "这些照片，等你放进来。";
-      strip.appendChild(empty);
-      setupGalleryControls();
-      return;
+    if (text) {
+      const body = createElement("p", "slide-text", text);
+      content.appendChild(body);
     }
+
+    slide.appendChild(content);
+    return content;
+  };
+
+  const makeSlide = ({ className = "", label, title, text, image, photoMode, button }) => {
+    const slide = createElement("section", `slide ${className}`.trim());
+    slide.setAttribute("role", "group");
+    slide.setAttribute("aria-label", title || label || "故事页");
+
+    addPhoto(slide, image, title, photoMode);
+    const content = addContent(slide, label || "", title || "", text || "");
+
+    if (button) {
+      const link = createElement("a", "wechat-button", button.text);
+      link.href = button.href || "#";
+      link.addEventListener("click", (event) => event.stopPropagation());
+      content.appendChild(link);
+    }
+
+    return slide;
+  };
+
+  const buildSlides = () => {
+    const hero = data.hero || {};
+    const intro = data.intro || {};
+    const photos = Array.isArray(data.photos) ? data.photos : [];
+    const timeline = Array.isArray(data.timeline) ? data.timeline : [];
+    const letter = Array.isArray(data.letter) ? data.letter : [];
+    const promises = Array.isArray(data.promises) ? data.promises : [];
+    const final = data.final || {};
+
+    const built = [
+      makeSlide({
+        className: "cover-page",
+        label: hero.kicker || "写给你",
+        title: hero.title || "这些日子，我都记得",
+        text: hero.subtitle || "",
+        image: hero.image,
+      }),
+      makeSlide({
+        className: "text-page light",
+        label: "想先说的话",
+        title: intro.title || "不是逼你回头，只是想认真表达一次",
+        text: intro.text || "",
+      }),
+    ];
 
     photos.forEach((photo, index) => {
-      const card = document.createElement("article");
-      card.className = "photo-card";
-
-      const placeholder = document.createElement("div");
-      placeholder.className = "placeholder-card";
-      placeholder.hidden = true;
-      placeholder.textContent = photo.title || "我们的照片";
-
-      const img = document.createElement("img");
-      img.src = photo.src;
-      img.alt = photo.title || `我们的照片 ${index + 1}`;
-      img.loading = index === 0 ? "eager" : "lazy";
-      imageExistsFallback(img, placeholder);
-
-      const caption = document.createElement("div");
-      caption.className = "photo-caption";
-
-      const title = document.createElement("strong");
-      title.textContent = photo.title || "某一天";
-
-      const text = document.createElement("span");
-      text.textContent = photo.caption || "";
-
-      caption.append(title, text);
-
-      card.append(img, placeholder, caption);
-      strip.appendChild(card);
+      built.push(
+        makeSlide({
+          className: "photo-page",
+          label: `照片 ${index + 1}`,
+          title: photo.title || "某一天",
+          text: photo.caption || "",
+          image: photo.src,
+          photoMode: "contain",
+        })
+      );
     });
 
-    setupGalleryControls();
-  };
+    timeline.forEach((item) => {
+      built.push(
+        makeSlide({
+          className: "text-page light",
+          label: item.date || "时间线",
+          title: item.title || "",
+          text: item.text || "",
+        })
+      );
+    });
 
-  const setupGalleryControls = () => {
-    const strip = document.getElementById("photoStrip");
-    const prev = document.getElementById("prevPhoto");
-    const next = document.getElementById("nextPhoto");
-    const count = document.getElementById("galleryCount");
-    const cards = Array.from(strip.querySelectorAll(".photo-card"));
-    let currentIndex = 0;
-    let scrollFrame = null;
+    letter.forEach((text, index) => {
+      built.push(
+        makeSlide({
+          className: "text-page light",
+          label: index === 0 ? "我想认真对你说" : "我还想说",
+          title: index === 0 ? "给你的这封信" : "还有这些心里话",
+          text,
+        })
+      );
+    });
 
-    if (!prev || !next || !count || !cards.length) {
-      if (count) count.textContent = "0 / 0";
-      if (prev) prev.disabled = true;
-      if (next) next.disabled = true;
-      return;
+    if (promises.length) {
+      built.push(
+        makeSlide({
+          className: "text-page light",
+          label: "以后",
+          title: "如果还有机会，我想这样做",
+          text: promises.map((item) => `• ${item}`).join("\n"),
+        })
+      );
     }
 
-    prev.disabled = false;
-    next.disabled = false;
+    built.push(
+      makeSlide({
+        className: "final-page",
+        label: "最后",
+        title: final.title || "我还是想牵着你的手往前走",
+        text: final.text || "",
+        button: {
+          text: final.buttonText || "我想和你认真聊聊",
+          href: final.contactLink || "#",
+        },
+      })
+    );
 
-    const updateCount = () => {
-      count.textContent = `${currentIndex + 1} / ${cards.length}`;
-    };
+    slidesRoot.replaceChildren(...built);
+    slides = Array.from(slidesRoot.children);
+    slides.forEach((slide, index) => {
+      slide.setAttribute("aria-hidden", index === 0 ? "false" : "true");
+    });
+  };
 
-    const scrollToCard = (index) => {
-      currentIndex = (index + cards.length) % cards.length;
-      cards[currentIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-      updateCount();
-    };
+  const updateView = () => {
+    slidesRoot.style.transform = `translate3d(0, -${currentIndex * 100}dvh, 0)`;
 
-    const syncFromScroll = () => {
-      scrollFrame = null;
-      const stripCenter = strip.scrollLeft + strip.clientWidth / 2;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
+    slides.forEach((slide, index) => {
+      slide.setAttribute("aria-hidden", index === currentIndex ? "false" : "true");
+    });
 
-      cards.forEach((card, index) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const distance = Math.abs(cardCenter - stripCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
+    prevButton.disabled = currentIndex === 0;
+    nextButton.disabled = currentIndex === slides.length - 1;
+    pageCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+    progressBar.style.width = `${((currentIndex + 1) / slides.length) * 100}%`;
+  };
 
-      if (closestIndex !== currentIndex) {
-        currentIndex = closestIndex;
-        updateCount();
+  const goTo = (index) => {
+    currentIndex = Math.max(0, Math.min(index, slides.length - 1));
+    updateView();
+  };
+
+  const next = () => {
+    if (currentIndex < slides.length - 1) goTo(currentIndex + 1);
+  };
+
+  const prev = () => {
+    if (currentIndex > 0) goTo(currentIndex - 1);
+  };
+
+  const bindEvents = () => {
+    app.addEventListener("click", (event) => {
+      if (event.target.closest("button, a")) return;
+      next();
+    });
+
+    nextButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      next();
+    });
+
+    prevButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      prev();
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === " ") {
+        event.preventDefault();
+        next();
       }
-    };
-
-    prev.addEventListener("click", () => scrollToCard(currentIndex - 1));
-    next.addEventListener("click", () => scrollToCard(currentIndex + 1));
-    strip.addEventListener("scroll", () => {
-      if (scrollFrame) return;
-      scrollFrame = window.requestAnimationFrame(syncFromScroll);
-    });
-
-    updateCount();
-  };
-
-  const renderTimeline = () => {
-    const list = document.getElementById("timeline");
-    const items = Array.isArray(data.timeline) ? data.timeline : [];
-    list.innerHTML = "";
-
-    items.forEach((item) => {
-      const node = document.createElement("article");
-      node.className = "timeline-item";
-      const date = document.createElement("div");
-      date.className = "timeline-date";
-      date.textContent = item.date || "";
-
-      const title = document.createElement("h3");
-      title.className = "timeline-title";
-      title.textContent = item.title || "";
-
-      const text = document.createElement("p");
-      text.className = "timeline-desc";
-      text.textContent = item.text || "";
-
-      node.append(date, title, text);
-      list.appendChild(node);
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        prev();
+      }
     });
   };
 
-  const renderLetter = () => {
-    const letter = document.getElementById("letter");
-    const paragraphs = Array.isArray(data.letter) ? data.letter : [];
-    letter.innerHTML = "";
-
-    paragraphs.forEach((text) => {
-      const p = document.createElement("p");
-      p.textContent = text;
-      letter.appendChild(p);
-    });
-  };
-
-  const renderPromises = () => {
-    const list = document.getElementById("promiseList");
-    const promises = Array.isArray(data.promises) ? data.promises : [];
-    list.innerHTML = "";
-
-    promises.forEach((text) => {
-      const item = document.createElement("li");
-      item.textContent = text;
-      list.appendChild(item);
-    });
-  };
-
-  const renderFinal = () => {
-    const final = data.final || {};
-    setText("final-title", final.title);
-    setText("finalText", final.text);
-
-    const button = document.getElementById("contactButton");
-    if (button) {
-      button.textContent = final.buttonText || "我想和你认真聊聊";
-      button.href = final.contactLink || "#";
-    }
-  };
-
-  renderHero();
-  renderIntro();
-  renderPhotos();
-  renderTimeline();
-  renderLetter();
-  renderPromises();
-  renderFinal();
+  buildSlides();
+  bindEvents();
+  updateView();
 })();

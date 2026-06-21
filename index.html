@@ -10,81 +10,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="assets/photos/01.jpg" />
     <title>写给你的这些日子</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="page-shell">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-media" id="heroMedia">
-          <div class="hero-fallback">
-            <span>Our Story</span>
-          </div>
+    <main class="story-app" id="storyApp" aria-live="polite">
+      <div class="slides" id="slides"></div>
+
+      <button class="nav-button nav-prev" id="prevPage" type="button" aria-label="上一页">‹</button>
+      <button class="nav-button nav-next" id="nextPage" type="button" aria-label="下一页">›</button>
+
+      <div class="page-status" aria-hidden="true">
+        <div class="page-bar">
+          <span id="progressBar"></span>
         </div>
-        <div class="hero-copy">
-          <p class="kicker" id="heroKicker">写给你</p>
-          <h1 id="hero-title">这些日子，我都记得</h1>
-          <p id="heroSubtitle">
-            如果你愿意停下来看看，我想把我们走过的路，认真地放在这里。
-          </p>
-        </div>
-      </section>
-
-      <section class="section intro-section" aria-labelledby="intro-title">
-        <p class="section-label">想先说的话</p>
-        <h2 id="intro-title">不是逼你回头，只是想认真表达一次</h2>
-        <p id="introText">
-          我知道感情走到现在，一定不是一句话就能解决。我做这个页面，不是想给你压力，
-          也不是想让你立刻改变决定，只是想把我心里最真诚的话和我们一起经历过的瞬间，
-          好好放在你面前。
-        </p>
-      </section>
-
-      <section class="section" aria-labelledby="gallery-title">
-        <div class="section-heading gallery-heading">
-          <div>
-            <p class="section-label">照片</p>
-            <h2 id="gallery-title">我们留下来的瞬间</h2>
-          </div>
-          <div class="gallery-controls" aria-label="照片切换">
-            <button class="gallery-button" id="prevPhoto" type="button" aria-label="上一张照片">‹</button>
-            <button class="gallery-button" id="nextPhoto" type="button" aria-label="下一张照片">›</button>
-          </div>
-        </div>
-        <div class="photo-strip" id="photoStrip" aria-label="照片回忆"></div>
-        <p class="gallery-count" id="galleryCount" aria-live="polite">1 / 1</p>
-      </section>
-
-      <section class="section timeline-section" aria-labelledby="timeline-title">
-        <div class="section-heading">
-          <p class="section-label">时间线</p>
-          <h2 id="timeline-title">从相遇到现在</h2>
-        </div>
-        <div class="timeline" id="timeline"></div>
-      </section>
-
-      <section class="section letter-section" aria-labelledby="letter-title">
-        <p class="section-label">信</p>
-        <h2 id="letter-title">我想认真对你说</h2>
-        <div class="letter" id="letter"></div>
-      </section>
-
-      <section class="section promise-section" aria-labelledby="promise-title">
-        <p class="section-label">以后</p>
-        <h2 id="promise-title">如果还有机会，我想这样做</h2>
-        <ul class="promise-list" id="promiseList"></ul>
-      </section>
-
-      <section class="final-section" aria-labelledby="final-title">
-        <p class="section-label">最后</p>
-        <h2 id="final-title">我还是想牵着你的手往前走</h2>
-        <p id="finalText">
-          如果你愿意，我们找一个不争吵的时间，认真聊一次。你可以慢慢想，我会尊重你的感受，
-          也会承担我该改变的部分。
-        </p>
-        <a class="wechat-button" id="contactButton" href="#">我想和你认真聊聊</a>
-      </section>
+        <span class="page-count" id="pageCount">1 / 1</span>
+      </div>
     </main>
 
     <script src="data.js"></script>
