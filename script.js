@@ -151,7 +151,6 @@
       built.push(
         makeSlide({
           className: "photo-page",
-          label: `照片 ${index + 1}`,
           title: photo.title || "某一天",
           text: photo.caption || "",
           image: photo.src,
