@@ -1,0 +1,38 @@
+# 手机回忆页面
+
+这是一个纯静态页面，可以放到 GitHub Pages、Vercel、Netlify、腾讯云 COS、阿里云 OSS 或任意静态网站服务上，然后把链接发到微信。
+
+## 怎么替换成你们自己的内容
+
+1. 把照片放进 `assets/photos/`：
+   - 首屏大图：`hero.jpg`
+   - 微信分享图：`share.jpg`
+   - 照片墙：`photo-01.jpg`、`photo-02.jpg`、`photo-03.jpg`
+2. 打开 `data.js`，改里面的标题、照片说明、时间线、信和最后的按钮文案。
+3. 如果照片更多，继续在 `photos` 数组里增加：
+
+```js
+{
+  src: "assets/photos/photo-04.jpg",
+  title: "照片标题",
+  caption: "这张照片背后的回忆",
+}
+```
+
+## 微信里发链接
+
+微信不能直接把本地文件当链接发给别人看，需要先部署到公网。最简单的方式：
+
+- GitHub Pages：适合免费长期放一个静态页面。
+- Vercel / Netlify：拖拽整个文件夹即可部署。
+- 腾讯云 COS / 阿里云 OSS：适合国内访问更稳定。
+
+部署后，把生成的网址发给她即可。`index.html` 里已经写了基础的分享标题、描述和分享图配置。
+
+## 目前文件
+
+- `index.html`：页面结构
+- `styles.css`：手机端样式
+- `data.js`：你主要修改的内容
+- `script.js`：把 `data.js` 渲染成页面
+- `assets/photos/`：放照片
