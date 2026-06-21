@@ -146,8 +146,10 @@ p {
 .slide.light::after,
 .slide.text-page::after {
   background:
-    radial-gradient(circle at 18% 8%, rgba(255, 221, 196, 0.74), transparent 28rem),
-    linear-gradient(180deg, rgba(255, 248, 242, 0.35), rgba(255, 255, 255, 0.78));
+    linear-gradient(90deg, rgba(143, 51, 47, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(143, 51, 47, 0.05) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 248, 242, 0.44), rgba(255, 255, 255, 0.86));
+  background-size: 38px 38px, 38px 38px, auto;
 }
 
 .slide-content {
@@ -177,7 +179,7 @@ p {
 }
 
 .text-page .slide-title {
-  font-size: clamp(28px, 8vw, 38px);
+  font-size: clamp(30px, 8vw, 40px);
 }
 
 .slide-text {
@@ -189,14 +191,71 @@ p {
 }
 
 .text-page .slide-content {
-  padding: 26px 20px;
+  position: relative;
+  min-height: min(68vh, 560px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 82px 22px 48px;
   max-height: calc(100dvh - 132px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 8px;
-  background: var(--paper);
-  box-shadow: var(--shadow);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 249, 245, 0.82)),
+    var(--paper);
+  box-shadow:
+    0 28px 64px rgba(92, 47, 34, 0.16),
+    inset 0 0 0 1px rgba(143, 51, 47, 0.05);
   backdrop-filter: blur(14px);
+}
+
+.text-page .slide-content::before,
+.text-page .slide-content::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(143, 51, 47, 0.28), transparent);
+}
+
+.text-page .slide-content::before {
+  top: 22px;
+}
+
+.text-page .slide-content::after {
+  bottom: 22px;
+}
+
+.slide-number {
+  position: absolute;
+  top: 30px;
+  left: 22px;
+  color: rgba(143, 51, 47, 0.62);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.slide-mark {
+  position: absolute;
+  right: -10px;
+  bottom: 28px;
+  color: rgba(143, 51, 47, 0.055);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 15vw, 72px);
+  font-weight: 700;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.slide-rule {
+  width: 54px;
+  height: 3px;
+  margin: 0 0 22px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), rgba(143, 51, 47, 0.08));
 }
 
 .text-page .slide-text {

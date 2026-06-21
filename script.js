@@ -69,6 +69,19 @@
     return slide;
   };
 
+  const polishTextPages = (built) => {
+    built.forEach((slide, index) => {
+      const content = slide.querySelector(".slide-content");
+      if (!content || !slide.classList.contains("text-page")) return;
+
+      const number = createElement("span", "slide-number", String(index + 1).padStart(2, "0"));
+      const mark = createElement("span", "slide-mark", "LOVE LETTER");
+      const rule = createElement("span", "slide-rule");
+
+      content.prepend(number, mark, rule);
+    });
+  };
+
   const buildSlides = () => {
     const hero = data.hero || {};
     const intro = data.intro || {};
@@ -153,6 +166,7 @@
       })
     );
 
+    polishTextPages(built);
     slidesRoot.replaceChildren(...built);
     slides = Array.from(slidesRoot.children);
     slides.forEach((slide, index) => {
